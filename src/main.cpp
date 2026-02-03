@@ -1,13 +1,19 @@
-#include <iostream>
 #include <raylib.h>
-
-using namespace std;
-
-
+#include "../include/config.h"
+#include "../include/app.h"
 
 int main() {
+    InitWindow(config::screen_width, config::screen_height, "VevingHjelper");
+    SetTargetFPS(60);
 
-    cout << "Hello world!";
+    App app;
 
-    return 0;
+    while (!WindowShouldClose()) {
+
+        BeginDrawing();
+        app.draw();
+        EndDrawing();
+    }
+
+    CloseWindow();
 }
