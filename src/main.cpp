@@ -14,7 +14,6 @@ int main() {
     app.Init();
 
     while (!WindowShouldClose()) {
-        app.Update();
 
         BeginDrawing();
         app.Draw();

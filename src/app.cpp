@@ -8,12 +8,6 @@ void App::Init() {
     // initialize app state
 }
 
-void App::Update() {
-    if (app_screen == screen::form) {
-        UpdateFormScreen();
-    }
-}
-
 void App::Draw() {
     ClearBackground(config::background_color);
 
