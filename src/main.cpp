@@ -7,11 +7,11 @@ int main() {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     
     InitWindow(config::screen_width, config::screen_height, "VevingHjelper");
-    MaximizeWindow(); // Maximizes the window
+    MaximizeWindow();
+
     SetTargetFPS(60);
 
     App app;
-    app.Init();
 
     while (!WindowShouldClose()) {
 
@@ -20,6 +20,5 @@ int main() {
         EndDrawing();
     }
 
-    app.Shutdown();
     CloseWindow();
 }
