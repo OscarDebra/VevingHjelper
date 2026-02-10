@@ -110,7 +110,7 @@ void App::DrawGrid() {
     int available_width = screen_width - edge_padding * 2 - 200; // 200 is the width of the left column
     int available_height = screen_height - edge_padding * 2;
 
-    float canvas_ratio = user_data.width / user_data.height;
+    float canvas_ratio = (float)user_data.width / (float)user_data.height;
 
 
     float canvas_width, canvas_height;
@@ -130,5 +130,5 @@ void App::DrawGrid() {
     float canvas_y = edge_padding + (available_height - canvas_height) / 2;
 
     // Draw
-    DrawRectangle(canvas_x, canvas_y, canvas_width, canvas_height, LIGHTGRAY);
+    DrawRectangle(canvas_x, canvas_y, canvas_width, canvas_height, GRAY);
 }
