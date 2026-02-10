@@ -49,8 +49,6 @@ void App::DrawFormScreen() {
         is_editing_height = !is_editing_height;
 
     if (GuiButton({element_x_pos, margin_top + element_spacing * 3, element_width, element_height}, "Confirm")) {
-        TraceLog(LOG_INFO, "Width: %d", user_data.width);
-        TraceLog(LOG_INFO, "Height: %d", user_data.height);
         app_screen = screen::main;
     }
 }
@@ -59,6 +57,7 @@ void App::DrawMainScreen() {
     GuiSetStyle(DEFAULT, TEXT_SIZE, 18);
 
     DrawLeftColumn();
+    DrawGrid();
 }
 
 void App::DrawLeftColumn() {
@@ -100,4 +99,36 @@ void App::DrawLeftColumn() {
     if (GuiButton({edge_padding, screen_height - element_height - edge_padding, element_width, element_height}, "Back")) {
         app_screen = screen::form;
     }
+}
+
+void App::DrawGrid() {
+    int screen_width = GetScreenWidth();
+    int screen_height = GetScreenHeight();
+
+    int edge_padding = 100;
+
+    int available_width = screen_width - edge_padding * 2 - 200; // 200 is the width of the left column
+    int available_height = screen_height - edge_padding * 2;
+
+    float canvas_ratio = user_data.width / user_data.height;
+
+
+    float canvas_width, canvas_height;
+    
+    if (available_width / canvas_ratio <= available_height) {
+        // Width is the limiting factor
+        canvas_width = available_width;
+        canvas_height = available_width / canvas_ratio;
+    } else {
+        // Height is the limiting factor
+        canvas_height = available_height;
+        canvas_width = available_height * canvas_ratio;
+    }
+
+    // Center the canvas in the available space
+    float canvas_x = 200 + edge_padding + (available_width - canvas_width) / 2;
+    float canvas_y = edge_padding + (available_height - canvas_height) / 2;
+
+    // Draw
+    DrawRectangle(canvas_x, canvas_y, canvas_width, canvas_height, LIGHTGRAY);
 }

@@ -6,8 +6,8 @@ private:
         int width = 1;
         int height = 1;
 
-        int columns = 1;
-        int rows = 1;
+        int columns = 5;
+        int rows = 5;
     };
 
     UserData user_data;
@@ -31,5 +31,6 @@ private:
     void DrawFormScreen();
     void DrawMainScreen();
     void DrawLeftColumn();
+    void DrawGrid();
 };
 
