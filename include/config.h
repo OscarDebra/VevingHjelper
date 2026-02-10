@@ -5,6 +5,9 @@
 namespace config {
     extern Color background_color;
 
-    const int screen_width  = 400;
-    const int screen_height = 600;
+    // Window will be 90% of monitor size
+    const float screen_scale = 0.9f;
+    
+    extern int screen_width;
+    extern int screen_height;
 }

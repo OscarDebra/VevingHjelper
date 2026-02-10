@@ -3,32 +3,30 @@
 class App {
 private:
     struct UserData {
-        char name[64];
-        char email[64];
-
-        UserData() {
-            name[0] = '\0';
-            email[0] = '\0';
-        }
+        int width = 1;
+        int height = 1;
     };
 
-    UserData userData;
-    bool nameEdit = false;
-    bool emailEdit = false;
+    UserData user_data;
 
-    enum class AppScreen {
-        Form,
-        Main
+    bool is_editing_width = false;
+    bool is_editing_height = false;
+
+    enum class screen {
+        form,
+        main
     };
 
-    AppScreen screen = AppScreen::Form;
+    screen app_screen = screen::form;
 
 public:
-    void init();
-    void update();
-    void draw();
-    void shutdown();
-    void drawFormScreen();
-    void drawMainScreen();
+    void Init();
+    void Update();
+    void Draw();
+    void Shutdown();
+
+private:
+    void DrawFormScreen();
+    void DrawMainScreen();
 };
 
