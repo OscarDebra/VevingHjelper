@@ -40,6 +40,9 @@ private:
     int active_column_input = -1;
     int active_row_input = -1;
 
+    bool equalize_columns = false;
+    bool equalize_rows = false;
+
 public:
     void Draw();
 
@@ -50,6 +53,8 @@ private:
     void DrawGrid();
 
     Color ParseColor(const char* hex);
-    Color MixColors(Color a, Color b);
+    Color MixColors(Color weft, Color warp, int row, int col);
+
+    void HandleCopyPaste(char* buf, int max_len);
 };
 

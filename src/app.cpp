@@ -79,10 +79,18 @@ void App::DrawLeftColumn() {
         is_editing_columns = !is_editing_columns;
     if (!is_editing_columns) user_data.columns = temp_columns;
 
+    if (GuiButton({edge_padding, edge_padding + element_spacing * 2, element_width + text_width, element_height}, "Equalize Columns")) {
+        equalize_columns = true;
+    }
+    if (GuiButton({edge_padding, edge_padding + element_spacing * 3, element_width + text_width, element_height}, "Equalize Rows")) {
+        equalize_rows = true;
+    }
+
     // Back button
     if (GuiButton({edge_padding, screen_height - element_height - edge_padding, element_width, element_height}, "Back")) {
         app_screen = screen::form;
     }
+
 }
 
 void App::DrawGrid() {
@@ -130,6 +138,19 @@ void App::DrawGrid() {
         std::sort(h_dividers.begin(), h_dividers.end());
     }
     while ((int)h_dividers.size() > target_h) h_dividers.pop_back();
+
+
+    // Equalizer buttons logic
+    if (equalize_columns) {
+        for (int i = 0; i < (int)v_dividers.size(); i++)
+            v_dividers[i] = (float)(i + 1) / (float)(v_dividers.size() + 1);
+        equalize_columns = false;
+    }
+    if (equalize_rows) {
+        for (int i = 0; i < (int)h_dividers.size(); i++)
+            h_dividers[i] = (float)(i + 1) / (float)(h_dividers.size() + 1);
+        equalize_rows = false;
+    }
 
 
     // Hover detection
@@ -222,6 +243,8 @@ void App::DrawGrid() {
         if (active_column_input == col) {
             GuiTextBox(box, column_color_inputs[col].data(), 7, true);
             column_colors[col] = ParseColor(column_color_inputs[col].data());
+
+            HandleCopyPaste(column_color_inputs[col].data(), 7);
         } else {
             column_colors[col] = preview;
         }
@@ -250,6 +273,8 @@ void App::DrawGrid() {
         if (active_row_input == row) {
             GuiTextBox(box, row_color_inputs[row].data(), 7, true);
             row_colors[row] = ParseColor(row_color_inputs[row].data());
+
+            HandleCopyPaste(row_color_inputs[row].data(), 7);
         } else {
             row_colors[row] = preview;
         }
@@ -269,7 +294,7 @@ void App::DrawGrid() {
                 (int)row_edges[row],
                 (int)(col_edges[col+1] - col_edges[col]),
                 (int)(row_edges[row+1] - row_edges[row]),
-                MixColors(row_colors[row], column_colors[col])
+                MixColors(row_colors[row], column_colors[col], row, col)  // pass row, col
             );
         }
     }
@@ -301,11 +326,38 @@ Color App::ParseColor(const char* hex) {
 }
 
 
-Color App::MixColors(Color a, Color b) {
+Color App::MixColors(Color weft, Color warp, int row, int col) {
+    bool warp_on_top = (row + col) % 2 == 0;
+
+    Color top    = warp_on_top ? warp : weft;
+    Color bottom = warp_on_top ? weft : warp;
+
+    // If colors are the same, show pure color
+    if (top.r == bottom.r && top.g == bottom.g && top.b == bottom.b)
+        return top;
+
+    // Top layer dominates (70/30 weighting)
     return {
-        (unsigned char)((a.r+b.r)/2),
-        (unsigned char)((a.g+b.g)/2),
-        (unsigned char)((a.b+b.b)/2),
+        (unsigned char)(top.r * 0.7f + bottom.r * 0.3f),
+        (unsigned char)(top.g * 0.7f + bottom.g * 0.3f),
+        (unsigned char)(top.b * 0.7f + bottom.b * 0.3f),
         255
     };
+}
+
+void App::HandleCopyPaste(char* buf, int max_len) {
+    bool modifier = IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_LEFT_SUPER);
+
+    if (modifier && IsKeyPressed(KEY_V)) {
+        const char* clipboard = GetClipboardText();
+        if (clipboard) {
+            const char* src = (clipboard[0] == '#') ? clipboard + 1 : clipboard;
+            strncpy(buf, src, max_len - 1);
+            buf[max_len - 1] = '\0';
+        }
+    }
+
+    if (modifier && IsKeyPressed(KEY_C)) {
+        SetClipboardText(buf);
+    }
 }
