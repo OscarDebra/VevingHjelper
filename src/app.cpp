@@ -112,7 +112,7 @@ void App::DrawGrid() {
         canvas_width = available_height * canvas_ratio;
     }
 
-    float canvas_x = 200 + edge_padding + (available_width - canvas_width) / 2;
+    float canvas_x = 225 + edge_padding + (available_width - canvas_width) / 2;
     float canvas_y = edge_padding + (available_height - canvas_height) / 2;
 
     Vector2 mouse = GetMousePosition();
@@ -321,7 +321,7 @@ void App::DrawGrid() {
 
 Color App::ParseColor(const char* hex) {
     int r=255,g=255,b=255;
-    if (strlen(hex) >= 6) sscanf(hex, "%2x%2x%2x",&r,&g,&b);
+    if (strlen(hex) >= 6) sscanf(hex, "%2x%2x%2x", &r,&g,&b);
     return {(unsigned char)r, (unsigned char)g, (unsigned char)b, 255};
 }
 
@@ -329,7 +329,7 @@ Color App::ParseColor(const char* hex) {
 Color App::MixColors(Color weft, Color warp, int row, int col) {
     bool warp_on_top = (row + col) % 2 == 0;
 
-    Color top    = warp_on_top ? warp : weft;
+    Color top = warp_on_top ? warp : weft;
     Color bottom = warp_on_top ? weft : warp;
 
     // If colors are the same, show pure color
