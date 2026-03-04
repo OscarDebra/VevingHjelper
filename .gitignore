@@ -1,2 +1,32 @@
 catch/
 tests/
+
+# Build directories
+build/
+out/
+
+# Compiled binaries
+*.exe
+*.out
+*.app
+*.o
+*.a
+*.dylib
+*.dll
+*.lib
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# macOS
+.DS_Store
+
+# VS / Windows
+.vs/
+*.user
+*.suo
