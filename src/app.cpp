@@ -5,6 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include <raymath.h>
+#include <cstring>
 
 void App::Draw() {
     ClearBackground(config::background_color);

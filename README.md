@@ -1,6 +1,13 @@
-# VevingHjelper
+# Installation
 
-## Clone the project
+## Dependencies
+
+1. Make sure you have Homebrew with: `brew -- version` If not run `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` to install homebrew.
+
+2. Download Cmake on your device if not already done with: `brew install cmake` Verify with `cmake --version`.
+
+
+## Cloning
 
 1. Go inside the folder where you want to clone and run `git clone --recurse-submodules https://github.com/OscarDebra/VevingHjelper.git`to clone the project.
 
@@ -9,11 +16,12 @@
 
 ## Build on mac
 
-1. Make sure you have Homebrew with: `brew -- version` If not run `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` to install homebrew.
+1. Run `mkdir build && cd build` from the project root, then run `cmake ..` then run `cmake --build .`.
 
-2. Download Cmake on your device if not already done with: `brew install cmake` Verify with `cmake --version`.
+2. Now go back to root with `cd ..` and run the file with `./build/VevingHjelper` everytime.
 
-3. Run `mkdir build && cd build` then `cmake ..` then `cmake --build .`.
+## Build on windows
 
-4. Now go back to root with `cd ..` and run the file with `./build/VevingHjelper` everytime.
+1. The msys2 terminal is needed, it is possible otherwise, with visual studio, but you're on your own.
+
 
