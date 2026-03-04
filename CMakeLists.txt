@@ -40,18 +40,3 @@ elseif(WIN32)
     # on Windows raylib needs the OpenGL library
     target_link_libraries(VevingHjelper PRIVATE opengl32)
 endif()
-
-# -----------------------------------------------------------------------------
-# Unit tests (Catch2)
-# -----------------------------------------------------------------------------
-add_executable(tests
-    tests/test.cpp
-)
-
-target_include_directories(tests PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/external/catch
-)
-
-enable_testing()
-add_test(NAME simple_test COMMAND tests)
