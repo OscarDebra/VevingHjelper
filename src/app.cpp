@@ -208,84 +208,170 @@ void App::DrawGrid() {
     int col_count = col_edges.size() - 1;
     int row_count = row_edges.size() - 1;
 
+
     // Ensure color arrays
-    if ((int)column_colors.size() != col_count) {
-        column_colors.assign(col_count, WHITE);
-        column_color_inputs.resize(col_count);
-        for (auto &buf : column_color_inputs) strcpy(buf.data(), "FFFFFF");
+    if ((int)column_colors_a.size() != col_count) {
+        column_colors_a.assign(col_count, WHITE);
+        column_color_inputs_a.resize(col_count);
+        for (auto &buf : column_color_inputs_a) strcpy(buf.data(), "FFFFFF");
     }
-    if ((int)row_colors.size() != row_count) {
-        row_colors.assign(row_count, WHITE);
-        row_color_inputs.resize(row_count);
-        for (auto &buf : row_color_inputs) strcpy(buf.data(), "FFFFFF");
+    if ((int)row_colors_a.size() != row_count) {
+        row_colors_a.assign(row_count, WHITE);
+        row_color_inputs_a.resize(row_count);
+        for (auto &buf : row_color_inputs_a) strcpy(buf.data(), "FFFFFF");
+    }
+
+    if ((int)column_colors_b.size() != col_count) {
+        column_colors_b.assign(col_count, BLACK);
+        column_color_inputs_b.resize(col_count);
+        for (auto &buf : column_color_inputs_b) strcpy(buf.data(), "000000");
+    }
+    if ((int)row_colors_b.size() != row_count) {
+        row_colors_b.assign(row_count, BLACK);
+        row_color_inputs_b.resize(row_count);
+        for (auto &buf : row_color_inputs_b) strcpy(buf.data(), "000000");
     }
 
 
-    // Column hex inputs
+
+    // Column hex inputs a
     for (int col = 0; col < col_count; col++) {
         float cell_center_x = col_edges[col] + (col_edges[col+1] - col_edges[col]) / 2.0f;
         Rectangle swatch = { cell_center_x - 10, canvas_y - 25, 20, 20 };
         Rectangle box = { cell_center_x - 43, canvas_y - 55, 85, 24 };
-        Color preview = ParseColor(column_color_inputs[col].data());
+        Color preview = ParseColor(column_color_inputs_a[col].data());
 
         DrawRectangleRec(swatch, preview);
         DrawRectangleLinesEx(swatch, 1, BLACK);
 
         if (clicked) {
-            if (CheckCollisionPointRec(mouse, box) && active_column_input == col) {
+            if (CheckCollisionPointRec(mouse, box) && active_column_input_a == col) {
                 clicked_any_input = true;
             } else if (CheckCollisionPointRec(mouse, swatch)) {
-                active_column_input = (active_column_input == col) ? -1 : col;
-                active_row_input = -1;
+                active_column_input_a = (active_column_input_a == col) ? -1 : col;
+                active_row_input_a = -1;
+                active_column_input_b = -1;  // close B
+                active_row_input_b = -1;     // close B
                 clicked_any_input = true;
             }
         }
 
-        if (active_column_input == col) {
-            GuiTextBox(box, column_color_inputs[col].data(), 7, true);
-            column_colors[col] = ParseColor(column_color_inputs[col].data());
+        if (active_column_input_a == col) {
+            GuiTextBox(box, column_color_inputs_a[col].data(), 7, true);
+            column_colors_a[col] = ParseColor(column_color_inputs_a[col].data());
 
-            HandleCopyPaste(column_color_inputs[col].data(), 7);
+            HandleCopyPaste(column_color_inputs_a[col].data(), 7);
         } else {
-            column_colors[col] = preview;
+            column_colors_a[col] = preview;
         }
     }
 
-    // Row hex inputs
+
+    // Column hex inputs b
+    for (int col = 0; col < col_count; col++) {
+        float cell_center_x = col_edges[col] + (col_edges[col+1] - col_edges[col]) / 2.0f;
+        Rectangle swatch = { cell_center_x - 10, canvas_y + canvas_height + 5, 20, 20 };
+        Rectangle box = { cell_center_x - 43, canvas_y + canvas_height + 30, 85, 24 };
+        Color preview = ParseColor(column_color_inputs_b[col].data());
+
+        DrawRectangleRec(swatch, preview);
+        DrawRectangleLinesEx(swatch, 1, BLACK);
+
+        if (clicked) {
+            if (CheckCollisionPointRec(mouse, box) && active_column_input_b == col) {
+                clicked_any_input = true;
+            } else if (CheckCollisionPointRec(mouse, swatch)) {
+                active_column_input_b = (active_column_input_b == col) ? -1 : col;
+                active_row_input_b = -1;
+                active_column_input_a = -1;   // close A
+                active_row_input_a = -1;      // close A
+                clicked_any_input = true;
+            }
+        }
+
+        if (active_column_input_b == col) {
+            GuiTextBox(box, column_color_inputs_b[col].data(), 7, true);
+            HandleCopyPaste(column_color_inputs_b[col].data(), 7);
+            column_colors_b[col] = ParseColor(column_color_inputs_b[col].data());
+        } else {
+            column_colors_b[col] = preview;
+        }
+    }
+
+
+    // Row hex inputs a
     for (int row = 0; row < row_count; row++) {
         float cell_center_y = row_edges[row] + (row_edges[row+1] - row_edges[row]) / 2.0f;
         Rectangle swatch = { canvas_x - 25, cell_center_y - 10, 20, 20 };
         Rectangle box = { canvas_x - 90, cell_center_y - 40, 85, 24 };
-        Color preview = ParseColor(row_color_inputs[row].data());
+        Color preview = ParseColor(row_color_inputs_a[row].data());
 
         DrawRectangleRec(swatch, preview);
         DrawRectangleLinesEx(swatch, 1, BLACK);
 
         if (clicked) {
-            if (CheckCollisionPointRec(mouse, box) && active_row_input == row) {
+            if (CheckCollisionPointRec(mouse, box) && active_row_input_a == row) {
                 clicked_any_input = true;
             } else if (CheckCollisionPointRec(mouse, swatch)) {
-                active_row_input = (active_row_input == row) ? -1 : row;
-                active_column_input = -1;
+                active_row_input_a = (active_row_input_a == row) ? -1 : row;
+                active_column_input_a = -1;
+                active_column_input_b = -1;
+                active_row_input_b = -1;
                 clicked_any_input = true;
             }
         }
 
-        if (active_row_input == row) {
-            GuiTextBox(box, row_color_inputs[row].data(), 7, true);
-            row_colors[row] = ParseColor(row_color_inputs[row].data());
+        if (active_row_input_a == row) {
+            GuiTextBox(box, row_color_inputs_a[row].data(), 7, true);
+            row_colors_a[row] = ParseColor(row_color_inputs_a[row].data());
 
-            HandleCopyPaste(row_color_inputs[row].data(), 7);
+            HandleCopyPaste(row_color_inputs_a[row].data(), 7);
         } else {
-            row_colors[row] = preview;
+            row_colors_a[row] = preview;
         }
     }
 
+
+    // Row hex inputs b
+    for (int row = 0; row < row_count; row++) {
+        float cell_center_y = row_edges[row] + (row_edges[row+1] - row_edges[row]) / 2.0f;
+        Rectangle swatch = { canvas_x + canvas_width + 5, cell_center_y - 10, 20, 20 };
+        Rectangle box = { canvas_x + canvas_width + 30, cell_center_y - 11, 85, 24 };
+        Color preview = ParseColor(row_color_inputs_b[row].data());
+
+        DrawRectangleRec(swatch, preview);
+        DrawRectangleLinesEx(swatch, 1, BLACK);
+
+        if (clicked) {
+            if (CheckCollisionPointRec(mouse, box) && active_row_input_b == row) {
+                clicked_any_input = true;
+            } else if (CheckCollisionPointRec(mouse, swatch)) {
+                active_row_input_b = (active_row_input_b == row) ? -1 : row;
+                active_column_input_b = -1;
+                active_column_input_a = -1;   // close A
+                active_row_input_a = -1;      // close A
+                clicked_any_input = true;
+            }
+        }
+
+        if (active_row_input_b == row) {
+            GuiTextBox(box, row_color_inputs_b[row].data(), 7, true);
+            HandleCopyPaste(row_color_inputs_b[row].data(), 7);
+            row_colors_b[row] = ParseColor(row_color_inputs_b[row].data());
+        } else {
+            row_colors_b[row] = preview;
+        }
+    }
+
+
     // Close inputs if clicked elsewhere
     if (clicked && !clicked_any_input && !started_drag) {
-        active_column_input = -1;
-        active_row_input = -1;
+        active_column_input_a = -1;
+        active_row_input_a = -1;
+        active_column_input_b = -1;
+        active_row_input_b = -1;
     }
+        
 
     // Draw cells
     for (int row = 0; row < row_count; row++) {
@@ -295,20 +381,23 @@ void App::DrawGrid() {
                 (int)row_edges[row],
                 (int)(col_edges[col+1] - col_edges[col]),
                 (int)(row_edges[row+1] - row_edges[row]),
-                MixColors(row_colors[row], column_colors[col], row, col)  // pass row, col
+                MixColors(row_colors_a[row], row_colors_b[row],
+                        column_colors_a[col], column_colors_b[col], row, col)
             );
         }
     }
 
+
+
     // Draw dividers
     for (int i = 0; i < (int)v_dividers.size(); i++) {
         float x = canvas_x + v_dividers[i] * canvas_width;
-        Color c = (draggedV == i) ? WHITE : (hoveredV == i) ? GRAY : BLACK;
+        Color c = (draggedV == i) ? LIGHTGRAY : (hoveredV == i) ? GRAY : BLACK;
         DrawLineEx({x, canvas_y}, {x, canvas_y + canvas_height}, 2, c);
     }
     for (int i = 0; i < (int)h_dividers.size(); i++) {
         float y = canvas_y + h_dividers[i] * canvas_height;
-        Color c = (draggedH == i) ? WHITE : (hoveredH == i) ? GRAY : BLACK;
+        Color c = (draggedH == i) ? LIGHTGRAY : (hoveredH == i) ? GRAY : BLACK;
         DrawLineEx({canvas_x, y}, {canvas_x + canvas_width, y}, 2, c);
     }
 
@@ -320,6 +409,8 @@ void App::DrawGrid() {
     else SetMouseCursor(MOUSE_CURSOR_DEFAULT);
 }
 
+
+
 Color App::ParseColor(const char* hex) {
     int r=255,g=255,b=255;
     if (strlen(hex) >= 6) sscanf(hex, "%2x%2x%2x", &r,&g,&b);
@@ -327,24 +418,25 @@ Color App::ParseColor(const char* hex) {
 }
 
 
-Color App::MixColors(Color weft, Color warp, int row, int col) {
-    bool warp_on_top = (row + col) % 2 == 0;
 
-    Color top = warp_on_top ? warp : weft;
-    Color bottom = warp_on_top ? weft : warp;
+Color App::MixColors(Color weft_a, Color weft_b, Color warp_a, Color warp_b, int row, int col) {
+    // Checkerboard determines which layer is on top
+    bool layer_a_on_top = (row + col) % 2 == 0;
 
-    // If colors are the same, show pure color
-    if (top.r == bottom.r && top.g == bottom.g && top.b == bottom.b)
-        return top;
+    // Pick the warp and weft colors for this cell based on which layer faces up
+    Color warp  = layer_a_on_top ? warp_a  : warp_b;
+    Color weft  = layer_a_on_top ? weft_a  : weft_b;
 
-    // Top layer dominates (70/30 weighting)
+    // Top layer (warp) dominates at 70%, weft shows through at 30%
     return {
-        (unsigned char)(top.r * 0.7f + bottom.r * 0.3f),
-        (unsigned char)(top.g * 0.7f + bottom.g * 0.3f),
-        (unsigned char)(top.b * 0.7f + bottom.b * 0.3f),
+        (unsigned char)(warp.r * 0.7f + weft.r * 0.3f),
+        (unsigned char)(warp.g * 0.7f + weft.g * 0.3f),
+        (unsigned char)(warp.b * 0.7f + weft.b * 0.3f),
         255
     };
 }
+
+
 
 void App::HandleCopyPaste(char* buf, int max_len) {
     bool modifier = IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_LEFT_SUPER);
