@@ -427,11 +427,10 @@ Color App::MixColors(Color weft_a, Color weft_b, Color warp_a, Color warp_b, int
     Color warp  = layer_a_on_top ? warp_a  : warp_b;
     Color weft  = layer_a_on_top ? weft_a  : weft_b;
 
-    // Top layer (warp) dominates at 70%, weft shows through at 30%
     return {
-        (unsigned char)(warp.r * 0.7f + weft.r * 0.3f),
-        (unsigned char)(warp.g * 0.7f + weft.g * 0.3f),
-        (unsigned char)(warp.b * 0.7f + weft.b * 0.3f),
+        (unsigned char)(warp.r * 0.5f + weft.r * 0.5f),
+        (unsigned char)(warp.g * 0.5f + weft.g * 0.5f),
+        (unsigned char)(warp.b * 0.5f + weft.b * 0.5f),
         255
     };
 }
