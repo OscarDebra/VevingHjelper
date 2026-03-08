@@ -54,3 +54,11 @@ Fill in all the input fields with your own colors, and experiment with new combo
 # About the project
 
 This is a small project made for my mother in c++ 17 with raylib and raygui. The goal is to make an app that facilitates the creative process of making a pattern for a checkered double-weave carpet.
+
+C++ files are in the src path and header files are in the include path. The c++ files include an app file, which contains all of the methods for the app, the two other files besides main.cpp, which are config.cpp and ui.cpp are mostly there to change some settings and declare a few variables, look in the files for specifics. 
+
+I have an external folder which include the raylib library, which gets downloaded through a git submodule and raygui, which i pushed to github, because it's not large. You can see the submodule in the gitmodules file.
+
+The main.cpp file links everything together. The main function is in this file, and i just run the app.draw() function that is defined in the app file.
+
+Cmake is used to compile the project, the Cmake file is CMakeLists.txt found in the root of the project.
