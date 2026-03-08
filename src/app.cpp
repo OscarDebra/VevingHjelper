@@ -34,7 +34,8 @@ void App::DrawFormScreen() {
     float text_width = 100;
 
     GuiSetStyle(DEFAULT, TEXT_SIZE, 24);
-    DrawText("Enter canvas ratio", text_x_pos, margin_top, 30, DARKGRAY);
+    GuiSetStyle(DEFAULT, TEXT_COLOR_NORMAL, 0x000000FF);
+    DrawText("Enter canvas ratio", text_x_pos, margin_top, 30, BLACK);
 
     GuiLabel({text_x_pos, margin_top + element_spacing, text_width, element_height}, "Width:");
     GuiLabel({text_x_pos, margin_top + element_spacing * 2, text_width, element_height}, "Height:");
